@@ -1,0 +1,25 @@
+import json
+import requests
+
+endpoint = 'https://api.us-south.assistant.watson.cloud.ibm.com'
+assistant_id = '3e8794a4-372e-4ce2-8393-18245cf23358'
+api_key = 'M_8oCl9lYcTRIqRMykKwQjcqxCFygkVex3X2m4ydpZmA'
+
+headers = {
+    'Content-Type': 'application/json',
+}
+data = {
+    'input': {
+        'text': 'Tell me the current stockprice of AAPl!'
+    }
+}
+
+url = f'{endpoint}/v2/assistants/{assistant_id}/sessions?version=2021-06-14'
+response = requests.post(url, headers=headers, auth=('apikey', api_key), json={}).json()
+session_id = response['session_id']
+
+url = f'{endpoint}/v2/assistants/{assistant_id}/sessions/{session_id}/message?version=2021-06-14'
+response = requests.post(url, headers=headers, auth=('apikey', api_key), json=data).json()
+output_text = response['output']['generic'][0]['text']
+
+print(output_text)
